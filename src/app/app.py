@@ -11,9 +11,6 @@ SLACK_SIGNING_SECRET = '1e98a69d7dae9db3d6cbfbecea30e8fa'
 
 def verify_request(request):
     params = request.get_json()
-    token = params['token']
-    challenge = params['challenge']
-    type = params['type']
     body = request.data.decode('utf-8')
     timestamp = request.headers.get('X-Slack-Request-Timestamp')
 
