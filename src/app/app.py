@@ -10,9 +10,10 @@ PRODUCTION = False
 SLACK_SIGNING_SECRET = '1e98a69d7dae9db3d6cbfbecea30e8fa'
 
 def verify_request(request):
-    token = request.form.get('token')
-    challenge = request.form.get('challenge')
-    type = request.form.get('type')
+    params = request.get_json()
+    token = params['token']
+    challenge = params['challenge']
+    type = params['type']
     body = request.data.decode('utf-8')
     timestamp = request.headers.get('X-Slack-Request-Timestamp')
 
@@ -44,7 +45,8 @@ def action_event():
         try:
             verified = verify_request(request)
             if verified:
-                return request.form.get('challenge')
+                app.logger.warning("VERIFIED")
+                return request.get_json()['challlenge']
             else:
                 return "Unverified"
         except Exception as err:
