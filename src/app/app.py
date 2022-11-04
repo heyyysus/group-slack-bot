@@ -46,7 +46,7 @@ def action_event():
             verified = verify_request(request)
             if verified:
                 app.logger.warning("VERIFIED")
-                return request.get_json()['challlenge']
+                return request.get_json()['challenge']
             else:
                 return "Unverified"
         except Exception as err:
