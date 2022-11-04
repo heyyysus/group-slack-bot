@@ -8,7 +8,9 @@ RUN npm install
 
 COPY . .
 
-ENV PORT 500
+ENV PORT 5000
+
+EXPOSE 5000
 
 #DEVELOPMENT
 CMD ["npx", "nodemon", "src/index.ts"]
