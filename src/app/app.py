@@ -41,17 +41,25 @@ def index():
 
 @app.route('/api/action', methods = ['POST'])
 def action_event():
-    if request.method == 'POST':
+    if request.method == 'POST' and request.get_json()['type'] == "url_verification":
         try:
             verified = verify_request(request)
             if verified:
                 app.logger.warning("VERIFIED")
                 return request.get_json()['challenge']
             else:
-                return "Unverified"
+                return "Unverified", 401
         except Exception as err:
             app.logger.error("error: %s", err)
             return {"error": "bad request"}, 400
+    else:
+        try:
+            app.logger.warning("%s", request.get_json())
+            if verify_request(request):
+                return "", 200
+        except Exception as err:
+            app.logger.error("error: %s", err)
+            return {"error": "unauthorized"}, 401
 
 if __name__ == "__main__":
     app.run(debug=True)
